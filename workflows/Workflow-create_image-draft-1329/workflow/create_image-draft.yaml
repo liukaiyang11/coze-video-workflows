@@ -1,0 +1,391 @@
+schema_version: 1.0.0
+name: create_image
+id: 7577401048819187758
+description: "图片生成"
+mode: workflow
+icon: plugin_icon/workflow.png
+nodes:
+    - id: "160467"
+      type: llm
+      title: 大模型
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: -338.4065482855049
+        y: -221.9159302983191
+      parameters:
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: modelType
+              input:
+                type: integer
+                value: "1737521813"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·1.5·Pro·32k
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: temperature
+              input:
+                type: float
+                value: "0.8"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: prefixCache
+              input:
+                type: boolean
+                value: false
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: 用户输入信息{{input}}
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: 你是一个图片制作大师，擅长将简单的关键词拓展为生动有趣的画面。你能根据用户提供的角色、场景、表情动作等关键词，进行场景描述和视觉元素扩展，让画面更加丰富、有趣，具备视觉吸引力。
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: input
+              input:
+                type: string
+                value:
+                    path: fengge
+                    ref_node: "100001"
+        node_outputs:
+            output:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "187854"
+      type: image_generate
+      title: 图像生成
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-ImageGeneration-v2.jpg
+      description: "通过文字描述/添加参考图生成图片"
+      position:
+        x: 156.52742291014061
+        y: -32.72058700697659
+      parameters:
+        apiParam: null
+        modelSetting:
+            custom_ratio:
+                height: 1024
+                ratio_type: fixed
+                width: 576
+            ddim_steps: 30
+            guidance_scale: 2.5
+            images_reference: {}
+            model: 8
+            ratio: 0
+        node_inputs:
+            - name: output
+              input:
+                type: string
+                value:
+                    path: Group1
+                    ref_node: "192291"
+        node_outputs:
+            data:
+                type: image
+                value: null
+            msg:
+                type: string
+                value: null
+        prompt:
+            negative_prompt: ""
+            prompt: '{{output}}'
+        references: []
+        settingOnError:
+            processType: 1
+            switch: false
+            timeoutMs: 60000
+    - id: "181332"
+      type: condition
+      title: 选择器
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Condition-v2.jpg
+      description: "连接多个下游分支，若设定的条件成立则仅运行对应的分支，若均不成立则只运行“否则”分支"
+      position:
+        x: -771.6326526552185
+        y: -32.72058700697659
+      parameters:
+        branches:
+            - condition:
+                conditions:
+                    - left:
+                        input:
+                            type: image
+                            value:
+                                path: refer_img
+                                ref_node: "100001"
+                      operator: 9
+                logic: 2
+    - id: "129119"
+      type: llm
+      title: 图像理解大模型
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: -295.7751250110224
+        y: 68.79742653047842
+      parameters:
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: temperature
+              input:
+                type: float
+                value: "0.8"
+            - name: topP
+              input:
+                type: float
+                value: "1"
+            - name: frequencyPenalty
+              input:
+                type: float
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·1.5·Pro·视觉理解
+            - name: modelType
+              input:
+                type: integer
+                value: "1741232081"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: |-
+                    用户关键词输入：{{input}}
+                    用户希望的参考画像：{{refer_img}}
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: 你是一个专业的绘画大师，请仔细分析用户传入的图片分析用户想要的图像风格并结合用户输入提示词进行整体分析和图像的合理融合，输出最为合理的图像生成提示词。
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: input
+              input:
+                type: string
+                value:
+                    path: fengge
+                    ref_node: "100001"
+            - name: refer_img
+              input:
+                type: image
+                value:
+                    path: refer_img
+                    ref_node: "100001"
+        node_outputs:
+            output:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "192291"
+      type: variable_merge
+      title: 变量聚合
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/VariableMerge-icon.jpg
+      description: "对多个分支的输出进行聚合处理"
+      position:
+        x: 144.1666947220982
+        y: -235.93871694461873
+      parameters:
+        mergeGroups:
+            - name: Group1
+              variables:
+                - type: string
+                  value:
+                    content:
+                        blockID: "160467"
+                        name: output
+                        source: block-output
+                    rawMeta:
+                        type: 1
+                    type: ref
+                - type: string
+                  value:
+                    content:
+                        blockID: "129119"
+                        name: output
+                        source: block-output
+                    rawMeta:
+                        type: 1
+                    type: ref
+        node_outputs:
+            Group1:
+                type: string
+                value: null
+    - id: "100001"
+      type: start
+      title: 开始
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Start-v2.jpg
+      description: "工作流的起始节点，用于设定启动工作流需要的信息"
+      position:
+        x: -805.0025243001546
+        y: -182.9659302983191
+      parameters:
+        node_outputs:
+            changjing:
+                type: string
+                required: true
+                value: null
+            fengge:
+                type: string
+                required: true
+                value: null
+            mengban:
+                type: string
+                required: true
+                value: null
+            refer_img:
+                type: image
+                value: null
+    - id: "900001"
+      type: end
+      title: 结束
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-End-v2.jpg
+      description: "工作流的最终节点，用于返回工作流运行后的结果信息"
+      position:
+        x: 603.2615449675708
+        y: -70.87129227064386
+      parameters:
+        node_inputs:
+            - name: data
+              input:
+                value:
+                    path: data
+                    ref_node: "187854"
+            - name: prompt
+              input:
+                value:
+                    path: fengge
+                    ref_node: "100001"
+            - name: refer_img
+              input:
+                value:
+                    path: refer_img
+                    ref_node: "100001"
+        terminatePlan: returnVariables
+edges:
+    - source_node: "181332"
+      target_node: "160467"
+      source_port: "true"
+    - source_node: "160467"
+      target_node: "192291"
+    - source_node: "192291"
+      target_node: "187854"
+    - source_node: "187854"
+      target_node: "900001"
+    - source_node: "100001"
+      target_node: "181332"
+    - source_node: "181332"
+      target_node: "129119"
+      source_port: "false"
+    - source_node: "129119"
+      target_node: "192291"

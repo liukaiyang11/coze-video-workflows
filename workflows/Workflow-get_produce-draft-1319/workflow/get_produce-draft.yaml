@@ -1,0 +1,124 @@
+schema_version: 1.0.0
+name: get_produce
+id: 7577401130063806483
+description: "获取产品海报"
+mode: workflow
+icon: plugin_icon/workflow.png
+nodes:
+    - id: "100001"
+      type: start
+      title: 开始
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Start-v2.jpg
+      description: "工作流的起始节点，用于设定启动工作流需要的信息"
+      position:
+        x: 0
+        y: 0
+      parameters:
+        node_outputs:
+            input:
+                type: string
+                value: null
+    - id: "900001"
+      type: end
+      title: 结束
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-End-v2.jpg
+      description: "工作流的最终节点，用于返回工作流运行后的结果信息"
+      position:
+        x: 1000
+        y: 0
+      parameters:
+        node_inputs:
+            - name: output
+              input:
+                type: list
+                items:
+                    type: object
+                    properties:
+                        beijing:
+                            type: string
+                            value: null
+                        bstudio_create_time:
+                            type: time
+                            value: null
+                        erweima:
+                            type: string
+                            value: null
+                        haibao_image:
+                            type: string
+                            value: null
+                        produce_image:
+                            type: string
+                            value: null
+                    value: null
+                value:
+                    path: outputList
+                    ref_node: "167249"
+        terminatePlan: returnVariables
+    - id: "167249"
+      type: select_record
+      title: 查询数据
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icaon-database-select.jpg
+      description: "从表获取数据，用户可定义查询条件、选择列等，输出符合条件的数据"
+      position:
+        x: 467
+        y: -26
+      parameters:
+        databaseInfoList:
+            - databaseInfoID: "7577399269536088127"
+        node_outputs:
+            outputList:
+                type: list
+                items:
+                    type: object
+                    properties:
+                        beijing:
+                            type: string
+                            value: null
+                        bstudio_create_time:
+                            type: time
+                            value: null
+                        erweima:
+                            type: string
+                            value: null
+                        haibao_image:
+                            type: string
+                            value: null
+                        produce_image:
+                            type: string
+                            value: null
+                    value: null
+                value: null
+            rowNum:
+                type: integer
+                value: null
+        selectParam:
+            condition:
+                conditionList:
+                    - - null
+                      - null
+                      - null
+                logic: AND
+            fieldList:
+                - fieldID: 1.806308819969e+12
+                  isDistinct: false
+                - fieldID: 1.80630881997e+12
+                  isDistinct: false
+                - fieldID: 1.806308819971e+12
+                  isDistinct: false
+                - fieldID: 1.806308819972e+12
+                  isDistinct: false
+                - fieldID: 103
+                  isDistinct: false
+            limit: 100
+            orderByList:
+                - fieldID: 103
+                  isAsc: false
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 60000
+edges:
+    - source_node: "100001"
+      target_node: "167249"
+    - source_node: "167249"
+      target_node: "900001"

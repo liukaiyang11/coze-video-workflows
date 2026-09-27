@@ -1,0 +1,731 @@
+schema_version: 1.0.0
+name: create_video
+id: 7577401088597508147
+description: "创建视频"
+mode: workflow
+icon: plugin_icon/workflow.png
+nodes:
+    - id: "158101"
+      type: llm
+      title: 脚本创建
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: -1139.3696498732324
+        y: 118.98509664235232
+      parameters:
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: temperature
+              input:
+                type: float
+                value: "0.8"
+            - name: topP
+              input:
+                type: float
+                value: "0.7"
+            - name: frequencyPenalty
+              input:
+                type: float
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·1.5·Pro·深度思考·128K
+            - name: modelType
+              input:
+                type: integer
+                value: "1744866658"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: '{{input}}'
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: |
+                    你是一名专业的视频创作大师，擅长将故事蓝图转化为连续不断的 15 秒视频脚本。
+
+                    输入将包含 Story Blueprint，其中包括角色、场景、核心动作、氛围等信息。
+
+                    你需要将蓝图扩展为一个高质量的10秒连续镜头视频脚本。
+
+                    要求：
+                    - 只能生成一个连续镜头，不允许多段镜头或分镜头。
+                    - 视频内容必须严格遵循 Story Blueprint，不得偏离主题或改变风格。
+                    - 需要描述从 0 秒到 15 秒的连续动态，包括：环境变化、光线、动作推进、镜头移动。
+                    - 必须输出一句 40 字以内的旁白文案。
+                    - 必须保持风格统一。
+                    - 必须额外生成一段 AI 背景音乐的 prompt（纯音乐优先）。
+                    - 最终输出必须是严格的 JSON 格式：
+
+                    {
+                      "scene_description": "...",
+                      "style": "...",
+                      "text": "...",
+                      "song_prompt":"..."
+                    }
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: input
+              input:
+                type: list
+                items:
+                    type: object
+                    properties:
+                        constraints:
+                            type: string
+                            value: null
+                        core_action:
+                            type: string
+                            value: null
+                        environment:
+                            type: string
+                            value: null
+                        mood:
+                            type: string
+                            value: null
+                        role:
+                            type: string
+                            value: null
+                        story_flow:
+                            type: string
+                            value: null
+                    value: null
+                value:
+                    path: output
+                    ref_node: "1372140"
+        node_outputs:
+            output:
+                type: list
+                items:
+                    type: object
+                    properties:
+                        scene_description:
+                            type: string
+                            value: null
+                        song_prompt:
+                            type: string
+                            value: null
+                        style:
+                            type: string
+                            value: null
+                        text:
+                            type: string
+                            value: null
+                    value: null
+                value: null
+            reasoning_content:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "147549"
+      type: video_generation
+      title: 视频生成
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-VideoGeneration.png
+      description: "通过文本描述/添加首帧图片参考生成视频"
+      position:
+        x: -662.4936732715496
+        y: 118.98509664235232
+      parameters:
+        cameraFixed: false
+        duration: 12
+        dynamicParameters: []
+        firstFrame:
+            assistType: 2
+            type: string
+            value:
+                content:
+                    blockID: "100001"
+                    name: img
+                    source: block-output
+                rawMeta:
+                    type: 7
+                type: ref
+        generateMode: image2Video
+        model: doubao-seedance-pro
+        node_inputs:
+            - name: description
+              input:
+                type: string
+                value:
+                    path: output.scene_description
+                    ref_node: "158101"
+            - name: shot
+              input:
+                type: image
+                value:
+                    path: img
+                    ref_node: "100001"
+        node_outputs:
+            msg:
+                type: string
+                value: null
+            video:
+                type: video
+                value: null
+        prompt: |-
+            首帧图：{{shot}}
+            画面描述：{{description}}
+        ratio: adaptive
+        resolution: 480p
+        seed: -1
+        settingOnError:
+            processType: 1
+            retryTimes: 1
+            timeoutMs: 300000
+        watermark: false
+    - id: "187082"
+      type: plugin
+      title: 音乐生成
+      icon: https://p26-flow-product-sign.byteimg.com/tos-cn-i-13w3uml6bg/b9917339694d4ee6b8c5bdfe2fe2509a~tplv-13w3uml6bg-resize:128:128.image?rk3s=2e2596fd&x-expires=1754633822&x-signature=YsAEkKeF6GEKg%2BuX7%2FobOHBYtHE%3D
+      description: "音乐生成插件，可以根据用户输入或歌词生成歌曲"
+      position:
+        x: -673.3384312367806
+        y: -193.90838439283382
+      parameters:
+        apiParam:
+            - name: apiID
+              input:
+                type: string
+                value: "7449356525468106762"
+            - name: apiName
+              input:
+                type: string
+                value: "gen_song"
+            - name: pluginID
+              input:
+                type: string
+                value: "7449356525468090378"
+            - name: pluginName
+              input:
+                type: string
+                value: "音乐生成"
+            - name: pluginVersion
+              input:
+                type: string
+                value: ""
+            - name: tips
+              input:
+                type: string
+                value: ""
+            - name: outDocLink
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: Prompt
+              input:
+                type: string
+                value:
+                    path: output.song_prompt
+                    ref_node: "158101"
+        node_outputs:
+            code:
+                type: float
+                value: null
+                description: 错误码
+            data:
+                type: object
+                properties:
+                    FailureReason:
+                        type: object
+                        properties:
+                            Code:
+                                type: float
+                                value: null
+                                description: 错误码
+                            Msg:
+                                type: string
+                                value: null
+                                description: 错误信息
+                        value: null
+                        description: 生成失败原因
+                    SongDetail:
+                        type: object
+                        properties:
+                            AudioUrl:
+                                type: string
+                                value: null
+                                description: 歌曲链接
+                            Captions:
+                                type: string
+                                value: null
+                                description: 歌曲文本字幕
+                            Duration:
+                                type: float
+                                value: null
+                                description: 歌曲时长
+                            Lyrics:
+                                type: string
+                                value: null
+                                description: 歌曲歌词
+                        value: null
+                        description: 歌曲信息
+                    Status:
+                        type: float
+                        value: null
+                        description: 任务状态
+                    TaskID:
+                        type: string
+                        value: null
+                        description: 任务id
+                value: null
+                description: 返回数据
+            log_id:
+                type: string
+                value: null
+                description: 日志id
+            msg:
+                type: string
+                value: null
+                description: 错误信息
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "195419"
+      type: plugin
+      title: compile_video_audio
+      icon: https://p26-flow-product-sign.byteimg.com/tos-cn-i-13w3uml6bg/39bc0de9c64043628b5a3819f77d27bd~tplv-13w3uml6bg-resize:128:128.image?rk3s=2e2596fd&x-expires=1754634891&x-signature=HoM0tAjnJPVXzXf69Zu3W9n%2BE9k%3D
+      description: "该工具主要完成视频剪辑操作，支持视频拼接、特效等多种操作"
+      position:
+        x: -163.61493774551303
+        y: -35.16493683116704
+      parameters:
+        apiParam:
+            - name: apiID
+              input:
+                type: string
+                value: "7514607540051673128"
+            - name: apiName
+              input:
+                type: string
+                value: "compile_video_audio"
+            - name: pluginID
+              input:
+                type: string
+                value: "7514607540051640360"
+            - name: pluginName
+              input:
+                type: string
+                value: "视频剪辑工具"
+            - name: pluginVersion
+              input:
+                type: string
+                value: ""
+            - name: tips
+              input:
+                type: string
+                value: ""
+            - name: outDocLink
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: audio
+              input:
+                value:
+                    path: data.SongDetail.AudioUrl
+                    ref_node: "187082"
+            - name: video
+              input:
+                value:
+                    path: video
+                    ref_node: "147549"
+            - name: is_video_audio_sync
+              input:
+                type: boolean
+                value: true
+        node_outputs:
+            bill_info:
+                type: object
+                properties:
+                    duration:
+                        type: float
+                        required: true
+                        value: null
+                        description: 产物时长
+                    ratio:
+                        type: float
+                        required: true
+                        value: null
+                        description: 计费系数
+                required: true
+                value: null
+                description: 产物计费信息
+            req_id:
+                type: string
+                required: true
+                value: null
+                description: 剪辑任务ID
+            url:
+                type: string
+                required: true
+                value: null
+                description: 剪辑产物url
+            video_meta:
+                type: object
+                properties:
+                    duration:
+                        type: float
+                        required: true
+                        value: null
+                        description: 产物时长
+                    resolution:
+                        type: string
+                        required: true
+                        value: null
+                        description: 产物分辨率
+                    type:
+                        type: string
+                        required: true
+                        value: null
+                        description: 产物类型，取值范围是video、audio
+                required: true
+                value: null
+                description: 产物meta 信息
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "100001"
+      type: start
+      title: 开始
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Start-v2.jpg
+      description: "工作流的起始节点，用于设定启动工作流需要的信息"
+      position:
+        x: -1172.1798038581242
+        y: -289.71124522726296
+      parameters:
+        node_outputs:
+            changjing:
+                type: string
+                required: true
+                value: null
+            fengge:
+                type: string
+                required: true
+                value: null
+            img:
+                type: image
+                required: true
+                value: null
+            mengban:
+                type: string
+                required: true
+                value: null
+    - id: "900001"
+      type: end
+      title: 结束
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-End-v2.jpg
+      description: "工作流的最终节点，用于返回工作流运行后的结果信息"
+      position:
+        x: -72.15939182006048
+        y: 338.836063168833
+      parameters:
+        node_inputs:
+            - name: url
+              input:
+                value:
+                    path: url
+                    ref_node: "195419"
+        terminatePlan: returnVariables
+    - id: "1372140"
+      type: llm
+      title: 文案创建
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: -1154.1734617531042
+        y: -149.29071446300273
+      parameters:
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: temperature
+              input:
+                type: float
+                value: "0.8"
+            - name: topP
+              input:
+                type: float
+                value: "0.7"
+            - name: frequencyPenalty
+              input:
+                type: float
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·1.5·Pro·深度思考·128K
+            - name: modelType
+              input:
+                type: integer
+                value: "1744866658"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: |
+                    场景输入：{{changjing}}
+                    风格输入：{{fengge}}
+                    萌版：{{mengban}}
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: |
+                    你是一名专业的视觉叙事设计师，擅长根据极少量关键词创建具有逻辑性、氛围明确的“故事蓝图（Story Blueprint）”。
+
+                    用户会提供三个信息：风格、场景、萌版类型。
+
+                    你需要根据这三个输入，自动生成一个简洁清晰的故事蓝图。故事蓝图用于指导后续的视频脚本生成，因此必须包含：
+
+                    1. role：主角是谁？他的外观风格（与萌版一致）、基本身份、情绪状态。
+                    2. environment：场景如何呈现？背景空间、光线、氛围。
+                    3. core_action：主角在这段10秒视频中的唯一核心动作（必须单一，不能多动作）。
+                    4. mood：整体情绪调性（应与风格一致）。
+                    5. story_flow：10秒内动作的逻辑进程（起 → 承 → 转 → 收，仅描述结构，不写细节）。
+                    6. constraints：必须保持的限制（如：风格必须全程统一、不跳风格、不切镜头）。
+
+                    要求：
+                    - 输出的内容必须清楚、逻辑简单、易于用于后续生成连续镜头。
+                    - 所有内容必须能自然转化为一个10秒不间断的镜头。
+                    - 不要生成视频脚本，仅生成故事蓝图。
+
+                    最终以如下 JSON 格式输出：
+
+                    {
+                      "role": "...",
+                      "environment": "...",
+                      "core_action": "...",
+                      "mood": "...",
+                      "story_flow": "...",
+                      "constraints": "..."
+                    }
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: changjing
+              input:
+                value:
+                    path: changjing
+                    ref_node: "100001"
+            - name: fengge
+              input:
+                value:
+                    path: fengge
+                    ref_node: "100001"
+            - name: mengban
+              input:
+                value:
+                    path: mengban
+                    ref_node: "100001"
+        node_outputs:
+            output:
+                type: list
+                items:
+                    type: object
+                    properties:
+                        constraints:
+                            type: string
+                            value: null
+                        core_action:
+                            type: string
+                            value: null
+                        environment:
+                            type: string
+                            value: null
+                        mood:
+                            type: string
+                            value: null
+                        role:
+                            type: string
+                            value: null
+                        story_flow:
+                            type: string
+                            value: null
+                    value: null
+                value: null
+            reasoning_content:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "117064"
+      type: insert_record
+      title: 新增数据
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-database-insert.jpg
+      description: "向表添加新数据记录，用户输入数据内容后插入数据库"
+      position:
+        x: -117.88716478278675
+        y: 151.83556316883298
+      parameters:
+        databaseInfoList:
+            - databaseInfoID: "7577398685760421939"
+        insertParam:
+            fieldInfo:
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806321126401"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: changjing
+                            ref_node: "100001"
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806321126402"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: img
+                            ref_node: "100001"
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806321126403"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: fengge
+                            ref_node: "100001"
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806378526721"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: url
+                            ref_node: "195419"
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806321126404"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: mengban
+                            ref_node: "100001"
+        node_outputs:
+            outputList:
+                type: list
+                items:
+                    type: object
+                    value: null
+                value: null
+            rowNum:
+                type: integer
+                value: null
+edges:
+    - source_node: "1372140"
+      target_node: "158101"
+    - source_node: "158101"
+      target_node: "187082"
+    - source_node: "158101"
+      target_node: "147549"
+    - source_node: "147549"
+      target_node: "195419"
+    - source_node: "187082"
+      target_node: "195419"
+    - source_node: "195419"
+      target_node: "117064"
+    - source_node: "100001"
+      target_node: "1372140"
+    - source_node: "117064"
+      target_node: "900001"

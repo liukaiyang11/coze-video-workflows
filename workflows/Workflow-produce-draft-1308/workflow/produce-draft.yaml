@@ -1,0 +1,526 @@
+schema_version: 1.0.0
+name: produce
+id: 7577401194743218176
+description: "cs\n"
+mode: workflow
+icon: plugin_icon/workflow.png
+nodes:
+    - id: "100001"
+      type: start
+      title: 开始
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-Start-v2.jpg
+      description: "工作流的起始节点，用于设定启动工作流需要的信息"
+      position:
+        x: -201.66386178492928
+        y: -121.26033524369562
+      parameters:
+        node_outputs:
+            erweima:
+                type: image
+                required: true
+                value: null
+            produce:
+                type: string
+                required: true
+                value: null
+            produce_img:
+                type: image
+                required: true
+                value: null
+    - id: "900001"
+      type: end
+      title: 结束
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-End-v2.jpg
+      description: "工作流的最终节点，用于返回工作流运行后的结果信息"
+      position:
+        x: 1121.0708875202997
+        y: 188.3813912274044
+      parameters:
+        node_inputs:
+            - name: output
+              input:
+                type: image
+                value:
+                    path: data
+                    ref_node: "115303"
+        terminatePlan: returnVariables
+    - id: "192945"
+      type: plugin
+      title: cutout
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-plugin-cutout-v2.jpg
+      description: "保留图片前景主体，输出透明背景(.png)"
+      position:
+        x: 436.8398198851211
+        y: -317.73234387715434
+      parameters:
+        apiParam:
+            - name: apiID
+              input:
+                type: string
+                value: "7438919188246429731"
+            - name: apiName
+              input:
+                type: string
+                value: "cutout"
+            - name: pluginID
+              input:
+                type: string
+                value: "7438919188246413347"
+            - name: pluginName
+              input:
+                type: string
+                value: "抠图"
+            - name: pluginVersion
+              input:
+                type: string
+                value: ""
+            - name: tips
+              input:
+                type: string
+                value: ""
+            - name: outDocLink
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: url
+              input:
+                value:
+                    path: produce_img
+                    ref_node: "100001"
+            - name: only_mask
+              input:
+                type: string
+                value: "0"
+            - name: output_mode
+              input:
+                type: string
+                value: "0"
+        node_outputs:
+            data:
+                type: image
+                value: null
+                description: 透明背景图，在输出模式为透明背景时生效
+            mask:
+                type: string
+                value: null
+                description: 抠图区域蒙板矢量图，在输出模式为蒙版矢量图时生效
+            msg:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "115303"
+      type: drawing_board
+      title: 画板
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon_DrawingBoard_v2.jpg
+      description: "自定义画板排版，支持引用添加文本和图片"
+      position:
+        x: 1029.9513154733288
+        y: -161.6196087725956
+      parameters:
+        canvasSchema: '{"version":"6.0.0-rc2","width":1080,"height":1920,"backgroundColor":"#ffffffff","customVariableRefs":[{"variableId":"29BoGHRDMHu9oeTtyqEqb","objectId":"5UA_kWHHlKYwpnUOh6dOp","variableName":"beijing"},{"variableId":"UB9tKj9t53RgfNzVfyXtF","objectId":"FCcDv9_BztI3MbAa9UW4T","variableName":"produce"},{"variableId":"LTNAzflmojTbDaJYcC2JW","objectId":"sjwXywobWuVnmEeTfiQfV","variableName":"erweima"},{"variableId":"8LU8FJ_8yMVS4HvTAMRl-","objectId":"MQ3baihA2TNpRlVElfhw1","variableName":"reasoning_content"}],"objects":[{"subTargetCheck":false,"interactive":false,"width":1085.2257,"height":1914.2756,"backgroundColor":"","padding":0,"customFixedHeight":1914.2755937821148,"customId":"5UA_kWHHlKYwpnUOh6dOp","customType":"img","type":"Group","version":"6.0.0-rc2","originX":"left","originY":"top","left":-6.1636,"top":2.9663,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"clipPath":{"rx":0,"ry":0,"width":1085.2257,"height":1914.2756,"backgroundColor":"","padding":0,"type":"Rect","version":"6.0.0-rc2","originX":"left","originY":"top","left":-542.6128,"top":-957.1378,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"inverted":false,"absolutePositioned":false},"layoutManager":{"type":"layoutManager","strategy":"fit-content"},"objects":[{"cropX":0,"cropY":0,"width":400,"height":400,"editable":false,"backgroundColor":"","padding":0,"customFixedType":"full","type":"Image","version":"6.0.0-rc2","originX":"left","originY":"top","left":-543.1128,"top":-957.6378,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":2.7156,"scaleY":4.7882,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"src":"https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp//workflow/fabric-canvas/img-placeholder.png","crossOrigin":null,"filters":[]},{"rx":0,"ry":0,"width":1085.2257,"height":1914.2756,"backgroundColor":"","padding":0,"type":"Rect","version":"6.0.0-rc2","originX":"left","originY":"top","left":-542.6128,"top":-957.1378,"fill":"#00000000","stroke":"#000000ff","strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0}]},{"subTargetCheck":false,"interactive":false,"width":509.0469,"height":583.7916,"backgroundColor":"","padding":0,"customFixedHeight":583.7915726232596,"customId":"FCcDv9_BztI3MbAa9UW4T","customType":"img","type":"Group","version":"6.0.0-rc2","originX":"left","originY":"top","left":240.8567,"top":744.3353,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"clipPath":{"rx":0,"ry":0,"width":509.0469,"height":583.7916,"backgroundColor":"","padding":0,"type":"Rect","version":"6.0.0-rc2","originX":"left","originY":"top","left":-254.5234,"top":-291.8958,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"inverted":false,"absolutePositioned":false},"layoutManager":{"type":"layoutManager","strategy":"fit-content"},"objects":[{"cropX":0,"cropY":0,"width":400,"height":400,"editable":false,"backgroundColor":"","padding":0,"customFixedType":"fill","type":"Image","version":"6.0.0-rc2","originX":"left","originY":"top","left":-292.3958,"top":-292.3958,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1.462,"scaleY":1.462,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"src":"https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp//workflow/fabric-canvas/img-placeholder.png","crossOrigin":null,"filters":[]},{"rx":0,"ry":0,"width":509.0469,"height":583.7916,"backgroundColor":"","padding":0,"type":"Rect","version":"6.0.0-rc2","originX":"left","originY":"top","left":-254.5234,"top":-291.8958,"fill":"#00000000","stroke":"#000000ff","strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0}]},{"subTargetCheck":false,"interactive":false,"width":246.6258,"height":200.6705,"backgroundColor":"","padding":0,"customFixedHeight":200.67049655585424,"customId":"sjwXywobWuVnmEeTfiQfV","customType":"img","type":"Group","version":"6.0.0-rc2","originX":"left","originY":"top","left":813.2325,"top":1699.4675,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"clipPath":{"rx":0,"ry":0,"width":246.6258,"height":200.6705,"backgroundColor":"","padding":0,"type":"Rect","version":"6.0.0-rc2","originX":"left","originY":"top","left":-123.3129,"top":-100.3353,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"inverted":false,"absolutePositioned":false},"layoutManager":{"type":"layoutManager","strategy":"fit-content"},"objects":[{"cropX":0,"cropY":0,"width":400,"height":400,"editable":false,"backgroundColor":"","padding":0,"customFixedType":"fill","type":"Image","version":"6.0.0-rc2","originX":"left","originY":"top","left":-123.8129,"top":-123.8129,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":0.6191,"scaleY":0.6191,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"src":"https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp//workflow/fabric-canvas/img-placeholder.png","crossOrigin":null,"filters":[]},{"rx":0,"ry":0,"width":246.6258,"height":200.6705,"backgroundColor":"","padding":0,"type":"Rect","version":"6.0.0-rc2","originX":"left","originY":"top","left":-123.3129,"top":-100.3353,"fill":"#00000000","stroke":"#000000ff","strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0}]},{"fontSize":56,"fontWeight":"normal","fontFamily":"抖音美好体","fontStyle":"normal","lineHeight":1.2,"text":"点击编辑文本预览 ","charSpacing":0,"textAlign":"center","styles":[],"pathStartOffset":0,"pathSide":"left","pathAlign":"baseline","underline":false,"overline":false,"linethrough":false,"textBackgroundColor":"","direction":"ltr","minWidth":20,"splitByGrapheme":true,"width":515.2384,"height":51.1792,"editable":true,"backgroundColor":"","padding":14,"customFixedHeight":51.17923403591311,"customId":"MQ3baihA2TNpRlVElfhw1","customType":"block_text","type":"Textbox","version":"6.0.0-rc2","originX":"left","originY":"top","left":277.8301,"top":165.3187,"fill":"#fffffffe","stroke":"#000000ff","strokeWidth":0,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"clipPath":{"rx":0,"ry":0,"width":543.2384,"height":79.1792,"backgroundColor":"","padding":0,"type":"Rect","version":"6.0.0-rc2","originX":"left","originY":"top","left":-271.6192,"top":-39.5896,"fill":"rgb(0,0,0)","stroke":null,"strokeWidth":1,"strokeDashArray":null,"strokeLineCap":"butt","strokeDashOffset":0,"strokeLineJoin":"miter","strokeUniform":false,"strokeMiterLimit":4,"scaleX":1,"scaleY":1,"angle":0,"flipX":false,"flipY":false,"opacity":1,"shadow":null,"visible":true,"fillRule":"nonzero","paintFirst":"fill","globalCompositeOperation":"source-over","skewX":0,"skewY":0,"inverted":false,"absolutePositioned":false}}],"background":"#ffffffff"}'
+        node_inputs:
+            - name: beijing
+              input:
+                type: image
+                value:
+                    path: data
+                    ref_node: "119172"
+            - name: produce
+              input:
+                value:
+                    path: data
+                    ref_node: "192945"
+            - name: erweima
+              input:
+                value:
+                    path: erweima
+                    ref_node: "100001"
+            - name: reasoning_content
+              input:
+                type: string
+                value:
+                    path: output
+                    ref_node: "145249"
+        node_outputs:
+            data:
+                type: image
+                value: null
+            msg:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 60000
+    - id: "193149"
+      type: llm
+      title: 大模型
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: 187.68069579683726
+        y: 289.44219735183344
+      parameters:
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: temperature
+              input:
+                type: float
+                value: "0.8"
+            - name: topP
+              input:
+                type: float
+                value: "1"
+            - name: frequencyPenalty
+              input:
+                type: float
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: thinkingType
+              input:
+                type: string
+                value: enabled
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·1.6·视觉理解-250815
+            - name: modelType
+              input:
+                type: integer
+                value: "1756106585"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: |-
+                    背景风格关键词：{{produce}}
+                    产品图:{{produce_img}}
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: "你是一名专业的电商视觉设计师。  \n请根据用户上传的【产品图】，分析产品的外观特征，包括：颜色、材质、质感、形状、风格、适用场景、受众群体。  \n然后根据用户提供的【背景风格关键词】，为 AI 图像生成器写出一个高质量的 “背景提示词”。\n\n请确保提示词满足：\n1. 背景不包含产品本体。\n2. 背景风格与产品的风格相匹配但不喧宾夺主。\n3. 背景强调氛围、色彩、光影，不包含具体物品。\n4. 适合电商展示用途，视觉干净、突出主体。\n5. 支持高清扩散模型使用，如 SD、Flux、Recraft、Midjourney。\n\n最终输出结构如下（不要额外解释）：\n\n【背景提示词】\n- 风格：xxx\n- 色调：xxx\n- 场景氛围：xxx\n- 灯光：xxx\n- 材质表现：xxx\n- 中文 Prompt：xxxxxx\n"
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: produce
+              input:
+                value:
+                    path: produce
+                    ref_node: "100001"
+            - name: produce_img
+              input:
+                value:
+                    path: produce_img
+                    ref_node: "100001"
+        node_outputs:
+            output:
+                type: string
+                value: null
+            reasoning_content:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "119172"
+      type: image_generate
+      title: 图像生成_1
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-ImageGeneration-v2.jpg
+      description: "通过文字描述/添加参考图生成图片"
+      position:
+        x: 626.5810850914603
+        y: 289.44219735183344
+      parameters:
+        apiParam: null
+        modelSetting:
+            custom_ratio:
+                height: 1024
+                ratio_type: fixed
+                width: 576
+            ddim_steps: 25
+            guidance_scale: 2.5
+            images_reference: {}
+            max_images: 1
+            model: 8
+            ratio: 0
+            watermark: true
+        node_inputs:
+            - name: output
+              input:
+                value:
+                    path: output
+                    ref_node: "193149"
+        node_outputs:
+            data:
+                type: image
+                value: null
+            msg:
+                type: string
+                value: null
+        prompt:
+            negative_prompt: ""
+            prompt: '{{output}}'
+        references: []
+        settingOnError:
+            processType: 1
+            switch: false
+            timeoutMs: 600000
+    - id: "145249"
+      type: llm
+      title: 大模型_标题创建
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-LLM-v2.jpg
+      description: "调用大语言模型,使用变量和提示词生成回复"
+      version: "3"
+      position:
+        x: 292.1384543719198
+        y: 4.786639420824059
+      parameters:
+        fcParamVar:
+            knowledgeFCParam: {}
+        llmParam:
+            - name: temperature
+              input:
+                type: float
+                value: "0.8"
+            - name: topP
+              input:
+                type: float
+                value: "1"
+            - name: frequencyPenalty
+              input:
+                type: float
+                value: "0"
+            - name: maxTokens
+              input:
+                type: integer
+                value: "4096"
+            - name: spCurrentTime
+              input:
+                type: boolean
+                value: false
+            - name: spAntiLeak
+              input:
+                type: boolean
+                value: false
+            - name: thinkingType
+              input:
+                type: string
+                value: enabled
+            - name: responseFormat
+              input:
+                type: integer
+                value: "2"
+            - name: modelName
+              input:
+                type: string
+                value: 豆包·1.6·视觉理解-250815
+            - name: modelType
+              input:
+                type: integer
+                value: "1756106585"
+            - name: generationDiversity
+              input:
+                type: string
+                value: balance
+            - name: parameters
+              input:
+                type: object
+                value: null
+            - name: prompt
+              input:
+                type: string
+                value: 产品图片：{{input}}
+            - name: enableChatHistory
+              input:
+                type: boolean
+                value: false
+            - name: chatHistoryRound
+              input:
+                type: integer
+                value: "3"
+            - name: systemPrompt
+              input:
+                type: string
+                value: |-
+                    你是一名专业的电商文案策划，请根据用户上传的【产品图片】生成一个适合电商海报的标题。
+
+                    要求：
+                    1. 标题严格控制在 5–7 个字之间。
+                    2. 不出现夸张宣传词（如“最强”“第一”“极致”等）。
+                    3. 文风简洁有力度，可突出产品特征、气质或用途。
+                    4. 不要出现过于口号化的内容，不要出现标点符号。
+                    5. 语言必须自然、有广告感但不过度。
+
+                    请直接输出标题文本，不要解释。
+            - name: stableSystemPrompt
+              input:
+                type: string
+                value: ""
+            - name: canContinue
+              input:
+                type: boolean
+                value: false
+            - name: loopPromptVersion
+              input:
+                type: string
+                value: ""
+            - name: loopPromptName
+              input:
+                type: string
+                value: ""
+            - name: loopPromptId
+              input:
+                type: string
+                value: ""
+        node_inputs:
+            - name: input
+              input:
+                value:
+                    path: produce_img
+                    ref_node: "100001"
+        node_outputs:
+            output:
+                type: string
+                value: null
+            reasoning_content:
+                type: string
+                value: null
+        settingOnError:
+            processType: 1
+            retryTimes: 0
+            timeoutMs: 180000
+    - id: "113328"
+      type: insert_record
+      title: 新增数据
+      icon: https://lf3-static.bytednsdoc.com/obj/eden-cn/dvsmryvd_avi_dvsm/ljhwZthlaukjlkulzlp/icon/icon-database-insert.jpg
+      description: "向表添加新数据记录，用户输入数据内容后插入数据库"
+      position:
+        x: 1075.5111014968143
+        y: 13.380891227404405
+      parameters:
+        databaseInfoList:
+            - databaseInfoID: "7577399182110277672"
+        insertParam:
+            fieldInfo:
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806308819969"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: produce
+                            ref_node: "100001"
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806308819970"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: produce_img
+                            ref_node: "100001"
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806308819971"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: data
+                            ref_node: "115303"
+                - - name: fieldID
+                    input:
+                        type: string
+                        value: "1806308819972"
+                  - name: fieldValue
+                    input:
+                        value:
+                            path: erweima
+                            ref_node: "100001"
+        node_outputs:
+            outputList:
+                type: list
+                items:
+                    type: object
+                    value: null
+                value: null
+            rowNum:
+                type: integer
+                value: null
+edges:
+    - source_node: "100001"
+      target_node: "192945"
+    - source_node: "100001"
+      target_node: "193149"
+    - source_node: "100001"
+      target_node: "145249"
+    - source_node: "100001"
+      target_node: "115303"
+    - source_node: "113328"
+      target_node: "900001"
+    - source_node: "192945"
+      target_node: "115303"
+    - source_node: "119172"
+      target_node: "115303"
+    - source_node: "145249"
+      target_node: "115303"
+    - source_node: "115303"
+      target_node: "113328"
+    - source_node: "193149"
+      target_node: "119172"
